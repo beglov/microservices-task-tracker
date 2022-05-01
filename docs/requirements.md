@@ -124,7 +124,7 @@
    Actor — "Balance.Pay" event
    Command — Отправка уведомления на почту
    Data — User email + calc price
-   Event — Email.Send
+   Event — Balance.EmailSent
     ```
 
 7) После выплаты баланса (в конце дня) он должен обнуляться, и в аудитлоге всех операций аккаунтинга должно быть
