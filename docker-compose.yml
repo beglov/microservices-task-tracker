@@ -63,7 +63,7 @@ services:
   tasks:
     container_name: tasks
     build: tasks
-#    env_file: .env
+    env_file: ./tasks/.env
     volumes:
       - ./tasks:/app
     ports:
