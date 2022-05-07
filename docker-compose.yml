@@ -60,6 +60,19 @@ services:
     networks:
       - popug-jira
 
+  tasks:
+    container_name: tasks
+    build: tasks
+#    env_file: .env
+    volumes:
+      - ./tasks:/app
+    ports:
+      - "3010:3000"
+    depends_on:
+      - db
+      - broker
+    networks:
+      - popug-jira
 
 # network needs to be created manually, by:
 #  docker network create popug-jira
