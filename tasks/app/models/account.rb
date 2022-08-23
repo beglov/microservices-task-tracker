@@ -1,6 +1,16 @@
 class Account < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+  devise :database_authenticatable,
+         :omniauthable, omniauth_providers: %i[doorkeeper]
+
+  def self.from_omniauth(auth)
+    p "=" * 80
+    p auth
+    p "=" * 80
+    where(provider: auth.provider, uid: auth.uid).first_or_create do |account|
+      account.public_id = auth.info.public_id
+      account.full_name = auth.info.full_name
+      account.email = auth.info.email
+      account.role = auth.info.role
+    end
+  end
 end
