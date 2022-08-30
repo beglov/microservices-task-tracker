@@ -96,6 +96,7 @@ GEM
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
     faraday-net_http (3.0.0)
+    ffi (1.15.5)
     globalid (1.0.0)
       activesupport (>= 5.0)
     hashie (5.0.0)
@@ -111,6 +112,7 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     jwt (2.4.1)
+    king_konf (1.0.0)
     loofah (2.17.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -119,6 +121,7 @@ GEM
     marcel (1.0.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
+    mini_portile2 (2.8.0)
     minitest (5.15.0)
     msgpack (1.5.1)
     multi_xml (0.6.0)
@@ -161,6 +164,9 @@ GEM
     puma (5.6.4)
       nio4r (~> 2.0)
     racc (1.6.0)
+    racecar (2.8.2)
+      king_konf (~> 1.0.0)
+      rdkafka (~> 0.12.0)
     rack (2.2.3)
     rack-protection (2.2.2)
       rack
@@ -195,6 +201,10 @@ GEM
     rake (13.0.6)
     rash_alt (0.4.12)
       hashie (>= 3.4)
+    rdkafka (0.12.0)
+      ffi (~> 1.15)
+      mini_portile2 (~> 2.6)
+      rake (> 12)
     reline (0.3.1)
       io-console (~> 0.5)
     responders (3.0.1)
@@ -263,6 +273,7 @@ DEPENDENCIES
   omniauth-rails_csrf_protection
   pg (~> 1.1)
   puma (~> 5.0)
+  racecar
   rails (~> 7.0.2, >= 7.0.2.4)
   rspec-rails
   sprockets-rails

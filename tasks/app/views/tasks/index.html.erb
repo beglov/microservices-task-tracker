@@ -2,6 +2,14 @@
 
 <h1>Tasks</h1>
 
+<div>
+  <%= p session.to_h %>
+</div>
+
+<div>
+  <%= p current_account.attributes %>
+</div>
+
 <div id="tasks">
   <% @tasks.each do |task| %>
     <%= render task %>

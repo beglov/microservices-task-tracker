@@ -20,7 +20,8 @@ class Account < ApplicationRecord
     manager: 'manager'
   }
 
-  after_create do
+  after_create_commit do
+    self.reload
     account = self
 
     # ----------------------------- produce event -----------------------
@@ -34,7 +35,7 @@ class Account < ApplicationRecord
         public_id: account.public_id,
         email: account.email,
         full_name: account.full_name,
-        position: account.position
+        role: account.role
       }
     }
     # result = SchemaRegistry.validate_event(event, 'accounts.created', version: 1)

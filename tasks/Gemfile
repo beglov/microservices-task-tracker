@@ -30,6 +30,7 @@ gem "jbuilder"
 gem "devise"
 gem "omniauth-oauth2"
 gem "omniauth-rails_csrf_protection" # попробовать убрать
+gem "racecar"
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
