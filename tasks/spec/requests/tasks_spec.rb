@@ -13,21 +13,25 @@ require 'rails_helper'
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
 RSpec.describe "/tasks", type: :request do
+  let(:account) { create(:account, role: "admin") }
+  let!(:workers) { create_list(:account, 2, role: "worker") }
+
+  before { sign_in account }
   
   # This should return the minimal set of attributes required to create a valid
   # Task. As you add validations to Task, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    {description: "test description"}
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {description: ""}
   }
 
   describe "GET /index" do
     it "renders a successful response" do
-      Task.create! valid_attributes
+      create(:task)
       get tasks_url
       expect(response).to be_successful
     end
@@ -35,7 +39,7 @@ RSpec.describe "/tasks", type: :request do
 
   describe "GET /show" do
     it "renders a successful response" do
-      task = Task.create! valid_attributes
+      task = create(:task)
       get task_url(task)
       expect(response).to be_successful
     end
@@ -50,7 +54,7 @@ RSpec.describe "/tasks", type: :request do
 
   describe "GET /edit" do
     it "renders a successful response" do
-      task = Task.create! valid_attributes
+      task = create(:task)
       get edit_task_url(task)
       expect(response).to be_successful
     end
@@ -66,7 +70,7 @@ RSpec.describe "/tasks", type: :request do
 
       it "redirects to the created task" do
         post tasks_url, params: { task: valid_attributes }
-        expect(response).to redirect_to(task_url(Task.last))
+        expect(response).to redirect_to(tasks_url)
       end
     end
 
@@ -79,7 +83,7 @@ RSpec.describe "/tasks", type: :request do
 
       it "renders a successful response (i.e. to display the 'new' template)" do
         post tasks_url, params: { task: invalid_attributes }
-        expect(response).to be_successful
+        expect(response).to_not be_successful
       end
     end
   end
@@ -87,18 +91,18 @@ RSpec.describe "/tasks", type: :request do
   describe "PATCH /update" do
     context "with valid parameters" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        {description: "new description"}
       }
 
       it "updates the requested task" do
-        task = Task.create! valid_attributes
+        task = create(:task)
         patch task_url(task), params: { task: new_attributes }
         task.reload
-        skip("Add assertions for updated state")
+        expect(task.description).to eq new_attributes[:description]
       end
 
       it "redirects to the task" do
-        task = Task.create! valid_attributes
+        task = create(:task)
         patch task_url(task), params: { task: new_attributes }
         task.reload
         expect(response).to redirect_to(task_url(task))
@@ -107,23 +111,23 @@ RSpec.describe "/tasks", type: :request do
 
     context "with invalid parameters" do
       it "renders a successful response (i.e. to display the 'edit' template)" do
-        task = Task.create! valid_attributes
+        task = create(:task)
         patch task_url(task), params: { task: invalid_attributes }
-        expect(response).to be_successful
+        expect(response).to_not be_successful
       end
     end
   end
 
   describe "DELETE /destroy" do
     it "destroys the requested task" do
-      task = Task.create! valid_attributes
+      task = create(:task)
       expect {
         delete task_url(task)
       }.to change(Task, :count).by(-1)
     end
 
     it "redirects to the tasks list" do
-      task = Task.create! valid_attributes
+      task = create(:task)
       delete task_url(task)
       expect(response).to redirect_to(tasks_url)
     end

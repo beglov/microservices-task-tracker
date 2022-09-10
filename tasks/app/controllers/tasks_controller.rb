@@ -107,7 +107,7 @@ class TasksController < ApplicationController
         **task_event_data,
         event_name: 'TaskReshuffled',
         data: {
-          public_id: @task.public_id,
+          public_id: task.public_id,
           account_public_id: account.public_id
         }
       }
@@ -151,6 +151,6 @@ class TasksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def task_params
-      params.require(:task).permit(:account_id, :public_id, :description, :status)
+      params.require(:task).permit(:description)
     end
 end
