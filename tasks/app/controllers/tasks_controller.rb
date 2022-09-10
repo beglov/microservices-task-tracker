@@ -1,9 +1,10 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: %i[ show edit update destroy ]
+  before_action :set_task, only: %i[ show edit update destroy close]
 
   # GET /tasks or /tasks.json
   def index
     @tasks = Task.all
+    @my_tasks = Task.where(account_id: current_account.id)
   end
 
   # GET /tasks/1 or /tasks/1.json
@@ -22,7 +23,7 @@ class TasksController < ApplicationController
   # POST /tasks or /tasks.json
   def create
     @task = Task.new(task_params)
-    @task.account = current_account
+    @task.account = Account.where(role: "worker").sample
 
     respond_to do |format|
       if @task.save
@@ -56,6 +57,20 @@ class TasksController < ApplicationController
       format.html { redirect_to tasks_url, notice: "Task was successfully destroyed." }
       format.json { head :no_content }
     end
+  end
+
+  def reshuffle
+    accounts = Account.where(role: "worker")
+    tasks = Task.where(status: "open")
+    tasks.each do |task|
+      task.update_columns(account_id: accounts.sample.id)
+    end
+    redirect_to tasks_url, notice: "Задачи успешно заасайнены"
+  end
+
+  def close
+    @task.update(status: "close")
+    redirect_to tasks_url
   end
 
   private

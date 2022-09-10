@@ -13,4 +13,8 @@ class Account < ApplicationRecord
       account.role = auth.info.role
     end
   end
+
+  def worker?
+    role == "worker"
+  end
 end

@@ -7,5 +7,8 @@ Rails.application.routes.draw do
 
   root "tasks#index"
 
-  resources :tasks
+  resources :tasks do
+    post :reshuffle, on: :collection
+    post :close, on: :member
+  end
 end

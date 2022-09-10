@@ -1,28 +1,17 @@
-<div>
-  <%= p session.to_h %>
+<h1>Мои Задачи</h1>
+
+<div id="my-tasks">
+  <%= render "tasks", tasks: @my_tasks %>
 </div>
 
-<div>
-  <%= p current_account.attributes %>
-</div>
-
-<h1>Задачи</h1>
+<h1>Все Задачи</h1>
 
 <%= link_to "Новая задача", new_task_path %>
 
-<div id="tasks">
-  <table class="table table-bordered table-striped table-hover" role="grid">
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>Public ID</th>
-      <th>Исполнитель</th>
-      <th>Описание</th>
-      <th>Статус</th>
-    </tr>
-    </thead>
-    <tbody>
-    <%= render @tasks %>
-    </tbody>
-  </table>
+<% unless current_account.worker? %>
+  <%= button_to "Заассайнить задачи", reshuffle_tasks_path %>
+<% end %>
+
+<div id="all-tasks">
+  <%= render "tasks", tasks: @tasks %>
 </div>

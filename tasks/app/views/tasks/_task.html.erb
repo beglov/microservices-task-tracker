@@ -1,7 +1,8 @@
 <tr id="<%= dom_id task %>">
-  <td><%= task.id %></td>
-  <td><%= task.public_id %></td>
-  <td><%= task.account.full_name %></td>
-  <td><%= task.description %></td>
-  <td><%= task.status %></td>
+  <td><%= link_to task.id, task %></td>
+  <td><%= link_to task.public_id, task %></td>
+  <td><%= link_to "#{task.account.full_name} (#{task.account.email})", task %></td>
+  <td><%= link_to task.description, task %></td>
+  <td><%= link_to task.status, task %></td>
+  <td><%= button_to "Закрыть", close_task_path(task) %></td>
 </tr>

@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "Добавление новой задачи", type: :system do
+  let!(:workers) { create_list(:account, 2, role: "worker") }
+
   before do
     sign_in account
     visit root_path
@@ -26,7 +28,7 @@ RSpec.describe "Добавление новой задачи", type: :system do
     end
   end
 
-  context "Менеджер добавляет новую задачу" do
+  context "Менеджер" do
     let(:account) { create(:account, role: "manager") }
 
     it "добавляет новую задачу" do
@@ -45,7 +47,7 @@ RSpec.describe "Добавление новой задачи", type: :system do
     end
   end
 
-  context "Рабочий добавляет новую задачу" do
+  context "Рабочий" do
     let(:account) { create(:account, role: "worker") }
 
     it "добавляет новую задачу" do
