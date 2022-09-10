@@ -27,6 +27,20 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
+        # ----------------------------- produce event -----------------------
+        event = {
+          **task_event_data,
+          event_name: 'TaskCreated',
+          data: {
+            public_id: @task.public_id,
+            description: @task.description,
+            status: @task.status,
+            account_public_id: @task.account.public_id,
+          }
+        }
+        Producer.new.call(event, topic: 'tasks-stream')
+        # --------------------------------------------------------------------
+
         format.html { redirect_to tasks_url, notice: "Task was successfully created." }
         format.json { render :show, status: :created, location: @task }
       else
@@ -40,6 +54,20 @@ class TasksController < ApplicationController
   def update
     respond_to do |format|
       if @task.update(task_params)
+        # ----------------------------- produce event -----------------------
+        event = {
+          **task_event_data,
+          event_name: 'TaskUpdated',
+          data: {
+            public_id: @task.public_id,
+            description: @task.description,
+            status: @task.status,
+            account_public_id: @task.account.public_id,
+          }
+        }
+        Producer.new.call(event, topic: 'tasks-stream')
+        # --------------------------------------------------------------------
+
         format.html { redirect_to task_url(@task), notice: "Task was successfully updated." }
         format.json { render :show, status: :ok, location: @task }
       else
@@ -53,6 +81,15 @@ class TasksController < ApplicationController
   def destroy
     @task.destroy
 
+    # ----------------------------- produce event -----------------------
+    event = {
+      **task_event_data,
+      event_name: 'TaskDeleted',
+      data: { public_id: @task.public_id }
+    }
+    Producer.new.call(event, topic: 'tasks-stream')
+    # --------------------------------------------------------------------
+
     respond_to do |format|
       format.html { redirect_to tasks_url, notice: "Task was successfully destroyed." }
       format.json { head :no_content }
@@ -63,17 +100,50 @@ class TasksController < ApplicationController
     accounts = Account.where(role: "worker")
     tasks = Task.where(status: "open")
     tasks.each do |task|
-      task.update_columns(account_id: accounts.sample.id)
+      account = accounts.sample
+      task.update_columns(account_id: account.id)
+      # ----------------------------- produce event -----------------------
+      event = {
+        **task_event_data,
+        event_name: 'TaskReshuffled',
+        data: {
+          public_id: @task.public_id,
+          account_public_id: account.public_id
+        }
+      }
+      Producer.new.call(event, topic: 'tasks')
+      # --------------------------------------------------------------------
     end
     redirect_to tasks_url, notice: "Задачи успешно заасайнены"
   end
 
   def close
     @task.update(status: "close")
+    # ----------------------------- produce event -----------------------
+    event = {
+      **task_event_data,
+      event_name: 'TaskClosed',
+      data: {
+        public_id: @task.public_id,
+        account_public_id: current_account.public_id
+      }
+    }
+    Producer.new.call(event, topic: 'tasks')
+    # --------------------------------------------------------------------
     redirect_to tasks_url
   end
 
   private
+
+  def task_event_data
+    {
+      event_id: SecureRandom.uuid,
+      event_version: 1,
+      event_time: Time.now.to_s,
+      producer: 'tasks_service',
+    }
+  end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_task
       @task = Task.find(params[:id])
