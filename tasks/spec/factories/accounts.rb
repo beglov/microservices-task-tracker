@@ -3,6 +3,6 @@ FactoryBot.define do
     public_id { SecureRandom.uuid }
     full_name { "MyString" }
     email { "MyString" }
-    role { "MyString" }
+    role { "admin" }
   end
 end

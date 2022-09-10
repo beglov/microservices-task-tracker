@@ -12,26 +12,11 @@
   <% end %>
 
   <div>
-    <%= form.label :account_id, style: "display: block" %>
-    <%= form.text_field :account_id %>
-  </div>
-
-  <div>
-    <%= form.label :public_id, style: "display: block" %>
-    <%= form.text_field :public_id %>
-  </div>
-
-  <div>
-    <%= form.label :description, style: "display: block" %>
+    <%= form.label :description, "Описание", style: "display: block" %>
     <%= form.text_area :description %>
   </div>
 
   <div>
-    <%= form.label :status, style: "display: block" %>
-    <%= form.text_field :status %>
-  </div>
-
-  <div>
-    <%= form.submit %>
+    <%= form.submit "Сохранить" %>
   </div>
 <% end %>
