@@ -137,7 +137,7 @@ class TasksController < ApplicationController
     {
       event_id: SecureRandom.uuid,
       event_version: 1,
-      event_time: Time.now.to_s,
+      event_time: Time.zone.now.to_s,
       producer: "tasks_service",
     }
   end

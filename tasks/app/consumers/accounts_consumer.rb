@@ -3,10 +3,10 @@ class AccountsConsumer < Racecar::Consumer
   subscribes_to "accounts"
 
   def process(message)
-    puts "-" * 80
+    Rails.logger.debug "-" * 80
     Rails.logger.info { "Received message from topic: #{message.topic}" }
     Rails.logger.info { "Received message: #{message.value}" }
-    puts "-" * 80
+    Rails.logger.debug "-" * 80
 
     event = JSON.parse(message.value, symbolize_names: true)
 
@@ -33,8 +33,6 @@ class AccountsConsumer < Racecar::Consumer
       account.update!(
         role: event[:data][:role],
       )
-    else
-      # store events in DB
     end
   end
 end

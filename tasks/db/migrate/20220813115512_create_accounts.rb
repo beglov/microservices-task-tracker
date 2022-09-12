@@ -8,7 +8,7 @@ class CreateAccounts < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
-    execute <<-SQL
+    execute <<-SQL.squish
       CREATE TYPE account_roles AS ENUM ('admin', 'worker', 'manager');
     SQL
 
@@ -18,7 +18,7 @@ class CreateAccounts < ActiveRecord::Migration[7.0]
   def down
     remove_column :accounts, :role
 
-    execute <<-SQL
+    execute <<-SQL.squish
       DROP TYPE account_roles;
     SQL
 

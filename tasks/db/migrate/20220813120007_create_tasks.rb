@@ -8,7 +8,7 @@ class CreateTasks < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
-    execute <<-SQL
+    execute <<-SQL.squish
       CREATE TYPE task_statuses AS ENUM ('open', 'close');
     SQL
 
@@ -18,7 +18,7 @@ class CreateTasks < ActiveRecord::Migration[7.0]
   def down
     remove_column :tasks, :status
 
-    execute <<-SQL
+    execute <<-SQL.squish
       DROP TYPE task_statuses;
     SQL
 

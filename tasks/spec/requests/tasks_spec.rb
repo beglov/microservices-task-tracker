@@ -23,9 +23,12 @@ RSpec.describe "/tasks", type: :request do
   let(:invalid_attributes) do
     { description: "" }
   end
-  let!(:workers) { create_list(:account, 2, role: "worker") }
 
-  before { sign_in account }
+  before do
+    create_list(:account, 2, role: "worker")
+
+    sign_in account
+  end
 
   describe "GET /index" do
     it "renders a successful response" do

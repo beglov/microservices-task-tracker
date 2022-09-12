@@ -1,9 +1,9 @@
 require "rails_helper"
 
 RSpec.describe "Добавление новой задачи", type: :system do
-  let!(:workers) { create_list(:account, 2, role: "worker") }
-
   before do
+    create_list(:account, 2, role: "worker")
+
     sign_in account
     visit root_path
     click_on "Новая задача"
