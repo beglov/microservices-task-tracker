@@ -1,0 +1,38 @@
+name: linters
+on: [pull_request]
+jobs:
+  linters:
+    name: runner / linters
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          working-directory: ./tasks
+
+      - name: rubocop
+        uses: reviewdog/action-rubocop@v2
+        with:
+          workdir: ./tasks
+          rubocop_version: gemfile
+          rubocop_extensions: rubocop-performance:gemfile rubocop-rails:gemfile rubocop-rspec:gemfile
+
+      - name: brakeman
+        uses: reviewdog/action-brakeman@v2
+        with:
+          workdir: ./tasks
+          brakeman_version: gemfile
+
+#      - name: reek
+#        uses: reviewdog/action-reek@v1
+#        with:
+#          reek_version: gemfile
+#          github_token: ${{ secrets.github_token }}
+
+#      - name: fasterer
+#        uses: vk26/action-fasterer@v1
+#        with:
+#          github_token: ${{ secrets.github_token }}
