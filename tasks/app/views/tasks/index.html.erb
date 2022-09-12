@@ -1,0 +1,17 @@
+<h1>Мои Задачи</h1>
+
+<div id="my-tasks">
+  <%= render "tasks", tasks: @my_tasks %>
+</div>
+
+<h1>Все Задачи</h1>
+
+<%= link_to "Новая задача", new_task_path %>
+
+<% unless current_account.worker? %>
+  <%= button_to "Заассайнить задачи", reshuffle_tasks_path %>
+<% end %>
+
+<div id="all-tasks">
+  <%= render "tasks", tasks: @tasks %>
+</div>
