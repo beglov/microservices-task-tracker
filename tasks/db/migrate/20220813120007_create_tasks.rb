@@ -12,7 +12,7 @@ class CreateTasks < ActiveRecord::Migration[7.0]
       CREATE TYPE task_statuses AS ENUM ('open', 'close');
     SQL
 
-    add_column :tasks, :status, :task_statuses, null: false, default: 'open'
+    add_column :tasks, :status, :task_statuses, null: false, default: "open"
   end
 
   def down

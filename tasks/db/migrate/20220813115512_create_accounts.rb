@@ -12,7 +12,7 @@ class CreateAccounts < ActiveRecord::Migration[7.0]
       CREATE TYPE account_roles AS ENUM ('admin', 'worker', 'manager');
     SQL
 
-    add_column :accounts, :role, :account_roles, null: false, default: 'worker'
+    add_column :accounts, :role, :account_roles, null: false, default: "worker"
   end
 
   def down

@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Добавление новой задачи", type: :system do
   let!(:workers) { create_list(:account, 2, role: "worker") }

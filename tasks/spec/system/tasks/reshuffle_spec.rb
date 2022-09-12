@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Ассайн задач", type: :system do
   before do
@@ -30,7 +30,7 @@ RSpec.describe "Ассайн задач", type: :system do
     let(:account) { create(:account, role: "worker") }
 
     it "не может ассайнить задачи" do
-      expect(page).to_not have_button "Заассайнить задачи"
+      expect(page).not_to have_button "Заассайнить задачи"
     end
   end
 end

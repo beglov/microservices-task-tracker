@@ -8,7 +8,6 @@
 #   end
 # end
 
-
 # https://avdi.codes/run-rails-6-system-tests-in-docker-using-a-host-browser/
 
 Capybara.server_host = ENV.fetch("CAPYBARA_SERVER_HOST")
