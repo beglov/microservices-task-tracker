@@ -1,5 +1,5 @@
 class Task < ApplicationRecord
   belongs_to :account
 
-  validates :description, presence: true
+  validates :title, :description, presence: true
 end

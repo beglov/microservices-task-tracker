@@ -13,6 +13,7 @@ RSpec.describe "Добавление новой задачи", type: :system do
     let(:account) { create(:account, role: "admin") }
 
     it "добавляет новую задачу" do
+      fill_in "Заголовок", with: "Фак"
       fill_in "Описание", with: "Полить цветы"
 
       click_on "Сохранить"
@@ -32,6 +33,7 @@ RSpec.describe "Добавление новой задачи", type: :system do
     let(:account) { create(:account, role: "manager") }
 
     it "добавляет новую задачу" do
+      fill_in "Заголовок", with: "Фак"
       fill_in "Описание", with: "Полить цветы"
 
       click_on "Сохранить"
@@ -51,6 +53,7 @@ RSpec.describe "Добавление новой задачи", type: :system do
     let(:account) { create(:account, role: "worker") }
 
     it "добавляет новую задачу" do
+      fill_in "Заголовок", with: "Фак"
       fill_in "Описание", with: "Полить цветы"
 
       click_on "Сохранить"
