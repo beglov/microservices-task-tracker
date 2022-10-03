@@ -10,14 +10,14 @@ RUN apt-get update -qq && apt-get install -y build-essential nodejs postgresql-c
 
 RUN bundle config --global frozen 1
 
-WORKDIR /oauth
+WORKDIR /app
 
 COPY Gemfile Gemfile.lock ./
 
 RUN bundle install
 
-ADD package.json /oauth/package.json
-ADD yarn.lock /oauth/yarn.lock
+COPY package.json /app/package.json
+COPY yarn.lock /app/yarn.lock
 RUN yarn install
 
 COPY . .

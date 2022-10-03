@@ -8,12 +8,12 @@ default: &default
 
 development:
   <<: *default
-  database: auth_development
+  database: accounting_development
 
 test:
   <<: *default
-  database: auth_test
+  database: accounting_test
 
 production:
   <<: *default
-  database: auth_production
+  database: accounting_production
