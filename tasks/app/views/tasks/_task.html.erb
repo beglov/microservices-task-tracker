@@ -2,6 +2,8 @@
   <td><%= link_to task.id, task %></td>
   <td><%= link_to task.public_id, task %></td>
   <td><%= link_to "#{task.account.full_name} (#{task.account.email})", task %></td>
+  <td><%= link_to task.title.to_s, task %></td>
+  <td><%= link_to task.jira_id.to_s, task %></td>
   <td><%= link_to task.description, task %></td>
   <td><%= link_to task.status, task %></td>
   <td><%= button_to "Закрыть", close_task_path(task) %></td>

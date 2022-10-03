@@ -25,18 +25,24 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
+        @task.reload
         # ----------------------------- produce event -----------------------
         event = {
-          **task_event_data,
+          **task_event_data.merge(event_version: 2),
           event_name: "TaskCreated",
           data: {
             public_id: @task.public_id,
+            title: @task.title,
+            jira_id: @task.jira_id,
             description: @task.description,
             status: @task.status,
             account_public_id: @task.account.public_id,
           },
         }
-        Producer.new.call(event, topic: "tasks-stream")
+
+        result = SchemaRegistry.validate_event(event, "tasks.created", version: 2)
+
+        Producer.new.call(event, topic: "tasks-stream") if result.success?
         # --------------------------------------------------------------------
 
         format.html { redirect_to tasks_url, notice: "Task was successfully created." }
@@ -54,16 +60,21 @@ class TasksController < ApplicationController
       if @task.update(task_params)
         # ----------------------------- produce event -----------------------
         event = {
-          **task_event_data,
+          **task_event_data.merge(event_version: 2),
           event_name: "TaskUpdated",
           data: {
             public_id: @task.public_id,
+            title: @task.title,
+            jira_id: @task.jira_id,
             description: @task.description,
             status: @task.status,
             account_public_id: @task.account.public_id,
           },
         }
-        Producer.new.call(event, topic: "tasks-stream")
+
+        result = SchemaRegistry.validate_event(event, "tasks.updated", version: 2)
+
+        Producer.new.call(event, topic: "tasks-stream") if result.success?
         # --------------------------------------------------------------------
 
         format.html { redirect_to task_url(@task), notice: "Task was successfully updated." }
@@ -149,6 +160,6 @@ class TasksController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def task_params
-    params.require(:task).permit(:description)
+    params.require(:task).permit(:title, :jira_id, :description)
   end
 end
