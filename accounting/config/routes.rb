@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  root "dashboard#index"
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  devise_for :accounts, controllers: {
+    omniauth_callbacks: "accounts/omniauth_callbacks",
+  } do
+    delete "sign_out", to: "devise/sessions#destroy", as: :destroy_accounts_session
+  end
+
+  get "dashboard/index"
 end

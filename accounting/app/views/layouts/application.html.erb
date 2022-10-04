@@ -11,6 +11,20 @@
   </head>
 
   <body>
-    <%= yield %>
+  <% if notice %>
+    <div class="alert alert-success" role="alert"><%= notice %></div>
+  <% end %>
+  <% if alert %>
+    <div class="alert alert-warning" role="alert"><%= alert %></div>
+  <% end %>
+
+  <%= yield %>
+
+  <% if account_signed_in? %>
+    <br>
+    <br>
+    <br>
+    <%= link_to('Logout', destroy_account_session_path, data: { turbo_method: :delete }) %>
+  <% end %>
   </body>
 </html>
