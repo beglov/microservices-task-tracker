@@ -8,7 +8,7 @@ RUN apt-get update \
 
 # Upgrade RubyGems and install required Bundler version
 RUN gem update --system && \
-    gem install bundler
+    gem install bundler:2.3.13
 
 WORKDIR /app
 

@@ -1,0 +1,53 @@
+env:
+  POSTGRES_PASSWORD: 1q2w3e4r
+
+name: Test accounting service
+
+on: [pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: postgres:14
+        env:
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      chrome-server:
+        image: selenium/standalone-chrome:106.0
+        ports:
+          - 4444:4444
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          working-directory: ./accounting
+          bundler-cache: true
+
+      - name: Setup database and run tests
+        env:
+          DB_HOST: localhost
+          DB_USER: postgres
+          DB_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+          KAFKA_BROKER: broker:9092
+          DOORKEEPER_APP_ID: secret
+          DOORKEEPER_APP_SECRET: secret
+          DOORKEEPER_APP_URL: https://oauth.example.com
+          TEST_BROWSER: chrome
+          TEST_BROWSER_URL: http://localhost:4444
+        run: |
+          cd accounting
+          bundle exec rails db:prepare
+          bundle exec rspec
