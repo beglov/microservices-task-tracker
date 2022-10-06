@@ -35,7 +35,7 @@ gem "omniauth-rails_csrf_protection"
 # Simple framework for Kafka consumers
 gem "racecar"
 
-# DRY stack
+# dry-rb
 gem "dry-monads"
 
 # Schema registry for JSON schema events

@@ -42,7 +42,24 @@ class TasksController < ApplicationController
 
         result = SchemaRegistry.validate_event(event, "tasks.created", version: 2)
 
-        Producer.new.call(event, topic: "tasks-stream") if result.success?
+        raise "TaskCreated event not valid" if result.failure?
+
+        Producer.new.call(event, topic: "tasks-stream")
+
+        event = {
+          **task_event_data,
+          event_name: "TaskAssigned",
+          data: {
+            public_id: @task.public_id,
+            account_public_id: @task.account.public_id,
+          },
+        }
+
+        result = SchemaRegistry.validate_event(event, "tasks.assigned", version: 1)
+
+        raise "TaskAssigned event not valid" if result.failure?
+
+        Producer.new.call(event, topic: "tasks")
         # --------------------------------------------------------------------
 
         format.html { redirect_to tasks_url, notice: "Task was successfully created." }
@@ -114,12 +131,16 @@ class TasksController < ApplicationController
       # ----------------------------- produce event -----------------------
       event = {
         **task_event_data,
-        event_name: "TaskReshuffled",
+        event_name: "TaskAssigned",
         data: {
           public_id: task.public_id,
           account_public_id: account.public_id,
         },
       }
+      result = SchemaRegistry.validate_event(event, "tasks.assigned", version: 1)
+
+      raise "TaskAssigned event not valid" if result.failure?
+
       Producer.new.call(event, topic: "tasks")
       # --------------------------------------------------------------------
     end

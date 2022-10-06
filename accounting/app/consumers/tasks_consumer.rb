@@ -18,7 +18,7 @@ class TasksConsumer < Racecar::Consumer
     when "TaskDeleted"
       # TaskService::Delete.new(event).call
     when "TaskAssigned"
-      # TaskService::Assign.new(event).call
+      TaskService::Assign.new(event).call
     when "TaskClosed"
       # TaskService::Close.new(event).call
     end
