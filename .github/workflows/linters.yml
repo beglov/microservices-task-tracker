@@ -20,10 +20,36 @@ jobs:
           rubocop_version: gemfile
           rubocop_extensions: rubocop-performance:gemfile rubocop-rails:gemfile rubocop-rspec:gemfile
 
+      - name: rubocop
+        uses: reviewdog/action-rubocop@v2
+        with:
+          workdir: ./accounting
+          rubocop_version: gemfile
+          rubocop_extensions: rubocop-performance:gemfile rubocop-rails:gemfile rubocop-rspec:gemfile
+
+      - name: rubocop
+        uses: reviewdog/action-rubocop@v2
+        with:
+          workdir: ./analytics
+          rubocop_version: gemfile
+          rubocop_extensions: rubocop-performance:gemfile rubocop-rails:gemfile rubocop-rspec:gemfile
+
       - name: brakeman
         uses: reviewdog/action-brakeman@v2
         with:
           workdir: ./tasks
+          brakeman_version: gemfile
+
+      - name: brakeman
+        uses: reviewdog/action-brakeman@v2
+        with:
+          workdir: ./accounting
+          brakeman_version: gemfile
+
+      - name: brakeman
+        uses: reviewdog/action-brakeman@v2
+        with:
+          workdir: ./analytics
           brakeman_version: gemfile
 
 #      - name: reek
