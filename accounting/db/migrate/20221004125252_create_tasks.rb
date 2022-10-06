@@ -7,7 +7,8 @@ class CreateTasks < ActiveRecord::Migration[7.0]
       t.string :jira_id
       t.text :description, null: false
 
-      t.decimal :price, null: false, default: 0
+      t.decimal :fee_price, null: false, default: 0
+      t.decimal :complete_price, null: false, default: 0
 
       t.timestamps
     end

@@ -37,7 +37,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_04_134438) do
     t.string "title"
     t.string "jira_id"
     t.text "description", null: false
-    t.decimal "price", default: "0.0", null: false
+    t.decimal "fee_price", default: "0.0", null: false
+    t.decimal "complete_price", default: "0.0", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.enum "status", default: "open", null: false, enum_type: "task_statuses"

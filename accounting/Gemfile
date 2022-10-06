@@ -35,6 +35,12 @@ gem "omniauth-rails_csrf_protection"
 # Simple framework for Kafka consumers
 gem "racecar"
 
+# DRY stack
+gem "dry-monads"
+
+# Schema registry for JSON schema events
+gem "schema_registry", git: "https://github.com/beglov/event_schema_registry.git"
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 

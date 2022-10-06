@@ -1,4 +1,6 @@
 class Account < ApplicationRecord
+  has_many :tasks, dependent: :destroy
+
   devise :database_authenticatable,
          :omniauthable, omniauth_providers: %i[doorkeeper]
 
