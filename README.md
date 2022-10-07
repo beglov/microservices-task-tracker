@@ -39,7 +39,25 @@ docker-compose up tasks
 
 ## Тестирование
 
-Для запуска всех тестов сервиса необходимо выполнить `docker-compose run tasks bundle exec rspec`. Это запустит все
-тесты. Для системных тестов будет использован браузер по умолчанию, хром. Если нужно запустить фаерфокс, то нужно
-выполнить `docker-compose run -e TEST_BROWSER=firefox -e TEST_BROWSER_URL=http://firefox-server:4444 tasks bundle exec
-rspec`.
+В CI настроен автоматический прогон тестов для всех сервисов, он запускается при открытии PR.
+
+Для локального запуска тестов необходимо выполнить:
+
+```bash
+docker-compose run tasks bundle exec rspec
+```
+
+где `tasks` это имя сервиса. Это запустит все тесты для указанного сервиса.
+Системные тесты будут запущены с использованием браузера по умолчанию - Google Chrome.
+
+Имееется возможность запуска системных тестов с альтернативными браузерами, для этого необходимо выставить пару
+переменных окружения. Пример использования браузера Mozilla Firefox:
+
+```bash
+docker-compose run -e TEST_BROWSER=firefox -e TEST_BROWSER_URL=http://firefox-server:4444 tasks bundle exec rspec
+```
+
+Для отладки можно использовать VNC.
+Google Chrome доступен по адресу http://localhost:7900.
+Mozilla Firefox по http://localhost:7901.
+См. файл docker-compose.yml.

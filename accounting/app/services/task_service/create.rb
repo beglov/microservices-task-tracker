@@ -9,7 +9,7 @@ module TaskService
     def call
       yield validate_event
       account = yield find_account
-      task = yield create_task(account)
+      task = yield find_or_create_task(account)
 
       Success(task)
     end
@@ -30,7 +30,10 @@ module TaskService
       end
     end
 
-    def create_task(account)
+    def find_or_create_task(account)
+      task = Task.find_by(public_id: @event[:data][:public_id])
+      return Success(task) if task
+      
       task = account.tasks.new(task_param)
 
       if task.save

@@ -158,6 +158,10 @@ class TasksController < ApplicationController
         account_public_id: current_account.public_id,
       },
     }
+    result = SchemaRegistry.validate_event(event, "tasks.closed", version: 1)
+
+    raise "TaskClosed event not valid" if result.failure?
+
     Producer.new.call(event, topic: "tasks")
     # --------------------------------------------------------------------
     redirect_to tasks_url

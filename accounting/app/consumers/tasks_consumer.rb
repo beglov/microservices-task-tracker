@@ -20,7 +20,7 @@ class TasksConsumer < Racecar::Consumer
     when "TaskAssigned"
       TaskService::Assign.new(event).call
     when "TaskClosed"
-      # TaskService::Close.new(event).call
+      TaskService::Close.new(event).call
     end
   end
 end

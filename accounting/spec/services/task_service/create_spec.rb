@@ -22,7 +22,7 @@ RSpec.describe TaskService::Create do
       }
     end
 
-    context "when account fount" do
+    context "when account exists and task does not exist" do
       before { create(:account, public_id: "66fe01aa-d2b0-4912-872d-8a4323522102") }
 
       it "response with success" do
@@ -41,7 +41,20 @@ RSpec.describe TaskService::Create do
       end
     end
 
-    context "when account not fount" do
+    context "when account and task exists" do
+      let!(:account) { create(:account, public_id: "66fe01aa-d2b0-4912-872d-8a4323522102", balance: 100) }
+      let!(:task) { create(:task, public_id: "1bc8eba5-7ef2-40a2-9193-2b0be4e8b6ed") }
+
+      it "response with success" do
+        expect(service.call).to be_success
+      end
+
+      it "does not creates new task" do
+        expect { service.call }.not_to change(Task, :count)
+      end
+    end
+
+    context "when account does not exist" do
       it "response with failure" do
         expect(service.call).to be_failure
       end

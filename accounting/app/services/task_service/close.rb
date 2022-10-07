@@ -1,5 +1,5 @@
 module TaskService
-  class Assign
+  class Close
     include Dry::Monads[:result, :do]
 
     def initialize(event)
@@ -9,20 +9,22 @@ module TaskService
     def call
       yield validate_event
       account = yield find_account
-      task = yield find_or_create_task(account)
-      
+      task = yield find_task
+      task = yield close_task(task)
+
+      transaction = nil
       ActiveRecord::Base.transaction do
         transaction = yield create_payment_transaction(account, task)
         update_balance(account, transaction)
       end
 
-      Success(task)
+      Success(transaction)
     end
 
     private
 
     def validate_event
-      SchemaRegistry.validate_event(@event, "tasks.assigned", version: 1)
+      SchemaRegistry.validate_event(@event, "tasks.closed", version: 1)
     end
 
     def find_account
@@ -35,13 +37,18 @@ module TaskService
       end
     end
 
-    def find_or_create_task(account)
+    def find_task
       task = Task.find_by(public_id: @event[:data][:public_id])
-      return Success(task) if task
 
-      task = account.tasks.new(task_param)
+      if task
+        Success(task)
+      else
+        Failure("Task not fount")
+      end
+    end
 
-      if task.save
+    def close_task(task)
+      if task.update(status: :close)
         Success(task)
       else
         Failure(task.errors)
@@ -59,24 +66,16 @@ module TaskService
     end
 
     def update_balance(account, transaction)
-      account.balance -= transaction.debit
+      account.balance += transaction.credit
       account.save(validate: false)
-    end
-
-    def task_param
-      {
-        public_id: @event[:data][:public_id],
-        fee_price: rand(10..20),
-        complete_price: rand(20..40),
-      }
     end
 
     def transaction_param(task)
       {
         task_id: task.id,
-        description: "Списание денег за назначенную задачу",
-        credit: 0,
-        debit: task.fee_price,
+        description: "Начисление денег за выполненную задачу",
+        credit: task.complete_price,
+        debit: 0,
       }
     end
   end
