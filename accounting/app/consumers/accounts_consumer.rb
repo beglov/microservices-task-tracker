@@ -12,12 +12,7 @@ class AccountsConsumer < Racecar::Consumer
 
     case event[:event_name]
     when "AccountCreated"
-      Account.create!(
-        public_id: event[:data][:public_id],
-        role: event[:data][:role],
-        email: event[:data][:email],
-        full_name: event[:data][:full_name],
-      )
+      AccountService::Create.new(event).call
     when "AccountUpdated"
       account = Account.find_by!(public_id: event[:data][:public_id])
       account.update!(
