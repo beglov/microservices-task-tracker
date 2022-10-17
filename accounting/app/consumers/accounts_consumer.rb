@@ -14,12 +14,7 @@ class AccountsConsumer < Racecar::Consumer
     when "AccountCreated"
       AccountService::Create.new(event).call
     when "AccountUpdated"
-      account = Account.find_by!(public_id: event[:data][:public_id])
-      account.update!(
-        role: event[:data][:role],
-        email: event[:data][:email],
-        full_name: event[:data][:full_name],
-      )
+      AccountService::Update.new(event).call
     when "AccountDeleted"
       account = Account.find_by!(public_id: event[:data][:public_id])
       account.destroy
