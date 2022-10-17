@@ -10,7 +10,7 @@ module TaskService
       yield validate_event
       account = yield find_account
       task = yield find_or_create_task(account)
-      
+
       ActiveRecord::Base.transaction do
         transaction = yield create_payment_transaction(account, task)
         update_balance(account, transaction)

@@ -58,7 +58,7 @@ RSpec.describe TaskService::Close do
     end
 
     context "when task does not exist" do
-      let!(:account) { create(:account, public_id: "66fe01aa-d2b0-4912-872d-8a4323522102", balance: 100) }
+      before { create(:account, public_id: "66fe01aa-d2b0-4912-872d-8a4323522102", balance: 100) }
 
       it "response with failure" do
         expect(service.call).to be_failure

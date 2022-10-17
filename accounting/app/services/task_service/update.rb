@@ -1,5 +1,5 @@
 module TaskService
-  class Create
+  class Update
     include Dry::Monads[:result, :do]
 
     def initialize(event)
@@ -9,7 +9,8 @@ module TaskService
     def call
       yield validate_event
       account = yield find_account
-      task = yield find_or_create_task(account)
+      task = yield find_task
+      task = yield update_task(account:, task:)
 
       Success(task)
     end
@@ -17,7 +18,7 @@ module TaskService
     private
 
     def validate_event
-      SchemaRegistry.validate_event(@event, "tasks.created", version: 2)
+      SchemaRegistry.validate_event(@event, "tasks.updated", version: 2)
     end
 
     def find_account
@@ -30,28 +31,33 @@ module TaskService
       end
     end
 
-    def find_or_create_task(account)
+    def find_task
       task = Task.find_by(public_id: @event[:data][:public_id])
-      return Success(task) if task
 
-      task = account.tasks.new(task_param)
-
-      if task.save
+      if task
         Success(task)
       else
-        Failure(task.errors)
+        Failure("Task not fount")
       end
     end
 
-    def task_param
+    def update_task(account:, task:)
+      params = task_param(account)
+
+      if task.update(params)
+        Success(task)
+      else
+        Success(task.errors)
+      end
+    end
+
+    def task_param(account)
       {
-        public_id: @event[:data][:public_id],
         title: @event[:data][:title],
         jira_id: @event[:data][:jira_id],
         description: @event[:data][:description],
         status: @event[:data][:status],
-        fee_price: rand(10..20),
-        complete_price: rand(20..40),
+        account_id: account.id,
       }
     end
   end

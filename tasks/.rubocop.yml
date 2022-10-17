@@ -14,6 +14,7 @@ AllCops:
 
 Layout/LineLength:
   Enabled: false
+
 Style/Documentation:
   Enabled: false
 Style/FrozenStringLiteralComment:
@@ -26,6 +27,9 @@ Style/TrailingCommaInArrayLiteral:
   EnforcedStyleForMultiline: comma
 Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: consistent_comma
+Style/BlockDelimiters:
+  BracesRequiredMethods: ['expect']
+
 Metrics/MethodLength:
   Exclude:
     - 'db/migrate/**/*'
@@ -36,6 +40,8 @@ Rails/SkipsModelValidations:
   Exclude:
     - 'db/migrate/**/*'
 
+RSpec/ExampleLength:
+  Enabled: false
 RSpec/ContextWording:
   Exclude:
     - 'spec/system/**/*'
