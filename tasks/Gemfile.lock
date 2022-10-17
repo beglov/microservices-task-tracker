@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/beglov/event_schema_registry.git
-  revision: fc8bc6b7edca2534a0ee4ebf338494af40c4977a
+  revision: 6d67939118a306b84fa5915616ddb8b3d677b0c2
   specs:
     schema_registry (1)
       json-schema
@@ -104,6 +104,11 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.5.0)
     digest (3.1.0)
+    dry-core (0.8.1)
+      concurrent-ruby (~> 1.0)
+    dry-monads (1.4.0)
+      concurrent-ruby (~> 1.0)
+      dry-core (~> 0.7)
     erubi (1.10.0)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
@@ -329,6 +334,7 @@ DEPENDENCIES
   capybara
   debug
   devise
+  dry-monads
   factory_bot_rails
   faker
   importmap-rails
