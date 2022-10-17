@@ -18,10 +18,7 @@ class AccountsConsumer < Racecar::Consumer
     when "AccountDeleted"
       AccountService::Delete.new(event).call
     when "AccountRoleChanged"
-      account = Account.find_by!(public_id: event[:data][:public_id])
-      account.update!(
-        role: event[:data][:role],
-      )
+      AccountService::ChangeRole.new(event).call
     end
   end
 end

@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/beglov/event_schema_registry.git
-  revision: d20a31ee0c6a389bb4997da8f0d9d9f07cef3b5a
+  revision: 6d67939118a306b84fa5915616ddb8b3d677b0c2
   specs:
     schema_registry (1)
       json-schema
