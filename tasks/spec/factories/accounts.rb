@@ -3,6 +3,6 @@ FactoryBot.define do
     public_id { SecureRandom.uuid }
     full_name { Faker::Name.name }
     email { Faker::Internet.unique.email }
-    role { "admin" }
+    role { %w[admin worker manager].sample }
   end
 end
