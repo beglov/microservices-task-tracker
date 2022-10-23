@@ -7,6 +7,7 @@ module PaymentTransactionService
         ActiveRecord::Base.transaction do
           transaction = yield create_payment_transaction(account)
           update_balance(account, transaction)
+          PaymentTransactionMailer.daily_payout_email(account:, sum: transaction.debit).deliver_later
         end
       end
 

@@ -28,5 +28,9 @@ RSpec.describe PaymentTransactionService::DailyPayout do
     expect(account.balance).to eq 0
   end
 
+  it "enqueue daily payout email" do
+    expect { service.call }.to have_enqueued_mail(PaymentTransactionMailer, :daily_payout_email)
+  end
+
   it "produce payment transaction create event"
 end
