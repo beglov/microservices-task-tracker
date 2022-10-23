@@ -1,0 +1,7 @@
+<tr id="<%= dom_id payment_transaction %>">
+  <td><%= payment_transaction.description %></td>
+  <td><%= payment_transaction.account&.full_name %></td>
+  <td><%= payment_transaction.task&.title %></td>
+  <td><%= payment_transaction.credit %></td>
+  <td><%= payment_transaction.debit %></td>
+</tr>

@@ -1,2 +1,19 @@
-<h1>Dashboard#index</h1>
-<p>Find me in app/views/dashboard/index.html.erb</p>
+<h1>Заработано за сегодня: <%= current_account.worker? ? current_account.balance : earned_by_managers(@payment_transactions) %></h1>
+
+<h1>Транзакции проведенные <%= Time.zone.now.strftime("%d.%m.%Y") %></h1>
+
+<table class="table table-bordered table-striped table-hover" role="grid">
+  <thead>
+  <tr>
+    <th>Описание</th>
+    <th>Сотрудник</th>
+    <th>Задача</th>
+    <th>Кредит</th>
+    <th>Дебит</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <%= render @payment_transactions %>
+  </tbody>
+</table>

@@ -1,0 +1,14 @@
+development:
+  client_id: "accounting_service"
+  brokers:
+    - <%= ENV['KAFKA_BROKER'] %>
+
+test:
+  client_id: "accounting_service"
+  brokers:
+    - <%= ENV['KAFKA_BROKER'] %>
+
+production:
+  client_id: "accounting_service"
+  brokers:
+    - <%= ENV['KAFKA_BROKER'] %>
