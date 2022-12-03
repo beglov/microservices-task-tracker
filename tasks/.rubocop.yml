@@ -30,6 +30,8 @@ Style/TrailingCommaInHashLiteral:
 Style/BlockDelimiters:
   BracesRequiredMethods: ['expect']
 
+Metrics/AbcSize:
+  CountRepeatedAttributes: false
 Metrics/MethodLength:
   Exclude:
     - 'db/migrate/**/*'
