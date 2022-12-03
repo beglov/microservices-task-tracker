@@ -8,6 +8,8 @@ class AuthService
   def call
     account = yield find_or_create_account
 
+    return Failure("Доступ разрешен только Администратору") unless account.admin?
+
     Success(account)
   end
 
