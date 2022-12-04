@@ -1,2 +1,5 @@
-<h1>Dashboard#index</h1>
-<p>Find me in app/views/dashboard/index.html.erb</p>
+<h1>Заработано за период: <%= earned_by_managers(@payment_transactions) %></h1>
+
+<p>Пользователей ушло в минус за период: <%= count_loss_accounts(@payment_transactions) %></p>
+
+<p>Самая дорогая задача за период: <%= most_expensive_task(@payment_transactions) %></p>

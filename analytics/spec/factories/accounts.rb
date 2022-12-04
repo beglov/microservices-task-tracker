@@ -4,6 +4,6 @@ FactoryBot.define do
     full_name { Faker::Name.name }
     email { Faker::Internet.unique.email }
     role { %w[admin worker manager].sample }
-    # balance { "1500.99" }
+    balance { 0 }
   end
 end

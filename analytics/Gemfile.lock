@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/beglov/event_schema_registry.git
+  revision: 6d67939118a306b84fa5915616ddb8b3d677b0c2
+  specs:
+    schema_registry (1)
+      json-schema
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -131,6 +138,8 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     json (2.6.2)
+    json-schema (3.0.0)
+      addressable (>= 2.8)
     jwt (2.5.0)
     king_konf (1.0.1)
     loofah (2.19.0)
@@ -337,6 +346,7 @@ DEPENDENCIES
   rubocop-performance
   rubocop-rails
   rubocop-rspec
+  schema_registry!
   selenium-webdriver
   sprockets-rails
   stimulus-rails
