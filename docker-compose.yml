@@ -42,7 +42,7 @@ services:
 
   auth:
     build: auth
-    env_file: ./auth/.env
+    env_file: .env
     command: ['rails', 'server', '-p', '3000', '-b', '0.0.0.0']
     volumes:
       - ./auth:/app
@@ -52,28 +52,32 @@ services:
       - db
       - broker
 
-  tasks:
+  tasks-accounts-consumer: &tasks
+    command: bundle exec racecar AccountsConsumer
     build: tasks
-    env_file: ./tasks/.env
+    env_file: .env
     volumes:
       - ./tasks:/app
+    environment:
+      TEST_BROWSER: chrome
+      TEST_BROWSER_URL: http://chrome-server:4444
+    depends_on:
+      - db
+      - broker
+      - chrome-server
+
+  tasks:
+    <<: *tasks
+    command: ['rails', 'server', '-p', '3000', '-b', '0.0.0.0']
     ports:
       - "3010:3000"
-    environment:
-      TEST_BROWSER: chrome
-      TEST_BROWSER_URL: http://chrome-server:4444
-    depends_on:
-      - db
-      - broker
-      - chrome-server
 
-  accounting:
+  accounting-accounts-consumer: &accounting
+    command: bundle exec racecar AccountsConsumer
     build: accounting
-    env_file: ./accounting/.env
+    env_file: .env
     volumes:
       - ./accounting:/app
-    ports:
-      - "3020:3000"
     environment:
       TEST_BROWSER: chrome
       TEST_BROWSER_URL: http://chrome-server:4444
@@ -82,13 +86,22 @@ services:
       - broker
       - chrome-server
 
-  analytics:
+  accounting-tasks-consumer:
+    <<: *accounting
+    command: bundle exec racecar TasksConsumer
+
+  accounting:
+    <<: *accounting
+    command: [ 'rails', 'server', '-p', '3000', '-b', '0.0.0.0' ]
+    ports:
+      - "3020:3000"
+
+  analytics-accounts-consumer: &analytics
+    command: bundle exec racecar AccountsConsumer
     build: analytics
-    env_file: ./analytics/.env
+    env_file: .env
     volumes:
       - ./analytics:/app
-    ports:
-      - "3030:3000"
     environment:
       TEST_BROWSER: chrome
       TEST_BROWSER_URL: http://chrome-server:4444
@@ -96,6 +109,16 @@ services:
       - db
       - broker
       - chrome-server
+
+  analytics-tasks-consumer:
+    <<: *analytics
+    command: bundle exec racecar TasksConsumer
+
+  analytics:
+    <<: *analytics
+    command: [ 'rails', 'server', '-p', '3000', '-b', '0.0.0.0' ]
+    ports:
+      - "3030:3000"
 
   chrome-server:
     image: selenium/standalone-chrome:106.0
