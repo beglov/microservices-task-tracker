@@ -19,7 +19,7 @@ RSpec.describe AccountService::ChangeRole do
     end
 
     context "when account found" do
-      let!(:account) { create(:account, public_id: "9bc5a0dd-d311-4d59-9885-9616724c5962") }
+      let!(:account) { create(:account, public_id: "9bc5a0dd-d311-4d59-9885-9616724c5962", role: "worker") }
 
       it "response with success" do
         expect(service.call).to be_success

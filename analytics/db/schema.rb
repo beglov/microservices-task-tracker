@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_04_134438) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_06_200226) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -30,18 +30,34 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_04_134438) do
     t.index ["email"], name: "index_accounts_on_email", unique: true
   end
 
+  create_table "payment_transactions", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "task_id"
+    t.uuid "public_id", null: false
+    t.string "description"
+    t.decimal "credit", default: "0.0", null: false
+    t.decimal "debit", default: "0.0", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_payment_transactions_on_account_id"
+    t.index ["task_id"], name: "index_payment_transactions_on_task_id"
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.bigint "account_id", null: false
     t.uuid "public_id", null: false
     t.string "title"
     t.string "jira_id"
-    t.text "description", null: false
-    t.decimal "price", default: "0.0", null: false
+    t.text "description"
+    t.decimal "fee_price", default: "0.0", null: false
+    t.decimal "complete_price", default: "0.0", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.enum "status", default: "open", null: false, enum_type: "task_statuses"
     t.index ["account_id"], name: "index_tasks_on_account_id"
   end
 
+  add_foreign_key "payment_transactions", "accounts"
+  add_foreign_key "payment_transactions", "tasks"
   add_foreign_key "tasks", "accounts"
 end

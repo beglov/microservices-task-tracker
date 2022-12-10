@@ -30,7 +30,10 @@ Style/TrailingCommaInHashLiteral:
 Style/BlockDelimiters:
   BracesRequiredMethods: ['expect']
 
+Metrics/AbcSize:
+  CountRepeatedAttributes: false
 Metrics/MethodLength:
+  CountAsOne: ['array', 'hash', 'heredoc']
   Exclude:
     - 'db/migrate/**/*'
 
@@ -45,6 +48,8 @@ RSpec/ExampleLength:
 RSpec/ContextWording:
   Exclude:
     - 'spec/system/**/*'
+RSpec/MessageSpies:
+  EnforcedStyle: receive
 RSpec/MultipleExpectations:
   Exclude:
     - 'spec/system/**/*'

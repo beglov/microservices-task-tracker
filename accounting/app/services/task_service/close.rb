@@ -16,6 +16,7 @@ module TaskService
       ActiveRecord::Base.transaction do
         transaction = yield create_payment_transaction(account, task)
         update_balance(account, transaction)
+        produce_event(transaction)
       end
 
       Success(transaction)
@@ -55,10 +56,11 @@ module TaskService
       end
     end
 
-    def create_payment_transaction(account, task)
-      transaction = account.payment_transactions.new(transaction_param(task))
+    def create_payment_transaction(_account, task)
+      transaction = PaymentTransaction.new(payment_transaction_param(task))
 
       if transaction.save
+        transaction.reload # выполняем пезагрузку что бы появились данные в поле public_id
         Success(transaction)
       else
         Failure(transaction.errors)
@@ -70,12 +72,40 @@ module TaskService
       account.save(validate: false)
     end
 
-    def transaction_param(task)
+    def payment_transaction_param(task)
       {
+        account_id: task.account_id,
         task_id: task.id,
         description: "Начисление денег за выполненную задачу",
         credit: task.complete_price,
         debit: 0,
+      }
+    end
+
+    def produce_event(transaction)
+      event = payment_transaction_event(transaction)
+
+      result = SchemaRegistry.validate_event(event, "payment_transactions.added", version: 1)
+      raise "PaymentTransactionAdded event not valid: #{result.failure}" if result.failure?
+
+      Producer.new.call(event, topic: "payment-transactions")
+    end
+
+    def payment_transaction_event(transaction)
+      {
+        event_id: SecureRandom.uuid,
+        event_version: 1,
+        event_time: Time.zone.now.to_s,
+        producer: "accounting_service",
+        event_name: "PaymentTransactionAdded",
+        data: {
+          public_id: transaction.public_id,
+          account_public_id: transaction.account.public_id,
+          task_public_id: transaction.task&.public_id,
+          description: transaction.description,
+          credit: transaction.credit,
+          debit: transaction.debit,
+        },
       }
     end
   end

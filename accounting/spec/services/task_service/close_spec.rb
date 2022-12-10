@@ -20,7 +20,7 @@ RSpec.describe TaskService::Close do
 
     context "when account and task exists" do
       let!(:account) { create(:account, public_id: "66fe01aa-d2b0-4912-872d-8a4323522102", balance: 100) }
-      let!(:task) { create(:task, public_id: "1bc8eba5-7ef2-40a2-9193-2b0be4e8b6ed") }
+      let!(:task) { create(:task, public_id: "1bc8eba5-7ef2-40a2-9193-2b0be4e8b6ed", account:) }
 
       it "response with success" do
         expect(service.call).to be_success
@@ -54,7 +54,18 @@ RSpec.describe TaskService::Close do
         expect(account.balance).to eq new_balance
       end
 
-      it "produce payment transaction create event"
+      it "produce PaymentTransactionAdded event" do
+        producer = instance_double(Producer, call: nil)
+        allow(Producer).to receive(:new).and_return(producer)
+        expect(producer).to receive(:call).with(
+          hash_including(
+            producer: "accounting_service",
+            event_name: "PaymentTransactionAdded",
+          ),
+          topic: "payment-transactions",
+        )
+        service.call
+      end
     end
 
     context "when task does not exist" do
