@@ -14,6 +14,7 @@ module TaskService
       ActiveRecord::Base.transaction do
         transaction = yield create_payment_transaction(account, task)
         update_balance(account, transaction)
+        produce_event(transaction)
       end
 
       Success(task)
@@ -49,9 +50,10 @@ module TaskService
     end
 
     def create_payment_transaction(account, task)
-      transaction = account.payment_transactions.new(transaction_param(task))
+      transaction = account.payment_transactions.new(payment_transaction_param(task))
 
       if transaction.save
+        transaction.reload # выполняем пезагрузку что бы появились данные в поле public_id
         Success(transaction)
       else
         Failure(transaction.errors)
@@ -71,12 +73,39 @@ module TaskService
       }
     end
 
-    def transaction_param(task)
+    def payment_transaction_param(task)
       {
         task_id: task.id,
         description: "Списание денег за назначенную задачу",
         credit: 0,
         debit: task.fee_price,
+      }
+    end
+
+    def produce_event(transaction)
+      event = payment_transaction_event(transaction)
+
+      result = SchemaRegistry.validate_event(event, "payment_transactions.added", version: 1)
+      raise "PaymentTransactionAdded event not valid: #{result.failure}" if result.failure?
+
+      Producer.new.call(event, topic: "payment-transactions")
+    end
+
+    def payment_transaction_event(transaction)
+      {
+        event_id: SecureRandom.uuid,
+        event_version: 1,
+        event_time: Time.zone.now.to_s,
+        producer: "accounting_service",
+        event_name: "PaymentTransactionAdded",
+        data: {
+          public_id: transaction.public_id,
+          account_public_id: transaction.account.public_id,
+          task_public_id: transaction.task&.public_id,
+          description: transaction.description,
+          credit: transaction.credit,
+          debit: transaction.debit,
+        },
       }
     end
   end

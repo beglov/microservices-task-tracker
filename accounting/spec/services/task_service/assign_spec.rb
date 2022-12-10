@@ -58,7 +58,18 @@ RSpec.describe TaskService::Assign do
         expect(account.balance).to eq new_balance
       end
 
-      it "produce payment transaction create event"
+      it "produce PaymentTransactionAdded event" do
+        producer = instance_double(Producer, call: nil)
+        allow(Producer).to receive(:new).and_return(producer)
+        expect(producer).to receive(:call).with(
+          hash_including(
+            producer: "accounting_service",
+            event_name: "PaymentTransactionAdded",
+          ),
+          topic: "payment-transactions",
+        )
+        service.call
+      end
     end
 
     context "when account and task exists" do

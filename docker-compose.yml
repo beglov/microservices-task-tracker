@@ -114,6 +114,10 @@ services:
     <<: *analytics
     command: bundle exec racecar TasksConsumer
 
+  analytics-payment-transactions-consumer:
+    <<: *analytics
+    command: bundle exec racecar PaymentTransactionsConsumer
+
   analytics:
     <<: *analytics
     command: [ 'rails', 'server', '-p', '3000', '-b', '0.0.0.0' ]

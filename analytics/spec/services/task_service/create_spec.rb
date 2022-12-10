@@ -43,7 +43,7 @@ RSpec.describe TaskService::Create do
 
     context "when account and task exists" do
       before do
-        create(:account, public_id: "66fe01aa-d2b0-4912-872d-8a4323522102", balance: 100)
+        create(:account, public_id: "66fe01aa-d2b0-4912-872d-8a4323522102")
         create(:task, public_id: "1bc8eba5-7ef2-40a2-9193-2b0be4e8b6ed")
       end
 

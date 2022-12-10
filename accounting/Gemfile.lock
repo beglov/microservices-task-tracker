@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/beglov/event_schema_registry.git
-  revision: 6d67939118a306b84fa5915616ddb8b3d677b0c2
+  revision: 5b143f5cf98a5de5ab7e5ff6b543ca5a5db6caa4
   specs:
     schema_registry (1)
       json-schema
@@ -186,7 +186,7 @@ GEM
     parser (3.1.2.1)
       ast (~> 2.4.1)
     pg (1.4.3)
-    public_suffix (5.0.0)
+    public_suffix (5.0.1)
     puma (5.6.5)
       nio4r (~> 2.0)
     racc (1.6.0)

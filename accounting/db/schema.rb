@@ -34,6 +34,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_06_200226) do
   create_table "payment_transactions", force: :cascade do |t|
     t.bigint "account_id", null: false
     t.bigint "task_id"
+    t.uuid "public_id", default: -> { "gen_random_uuid()" }, null: false
     t.string "description"
     t.decimal "credit", default: "0.0", null: false
     t.decimal "debit", default: "0.0", null: false

@@ -4,7 +4,6 @@ class CreateAccounts < ActiveRecord::Migration[7.0]
       t.uuid :public_id, null: false
       t.string :full_name
       t.string :email, null: false
-      t.decimal :balance, null: false, default: 0
 
       t.timestamps
     end

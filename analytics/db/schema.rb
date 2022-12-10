@@ -23,7 +23,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_06_200226) do
     t.uuid "public_id", null: false
     t.string "full_name"
     t.string "email", null: false
-    t.decimal "balance", default: "0.0", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.enum "role", default: "worker", null: false, enum_type: "account_roles"
@@ -34,6 +33,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_06_200226) do
   create_table "payment_transactions", force: :cascade do |t|
     t.bigint "account_id", null: false
     t.bigint "task_id"
+    t.uuid "public_id", null: false
     t.string "description"
     t.decimal "credit", default: "0.0", null: false
     t.decimal "debit", default: "0.0", null: false
