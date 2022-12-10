@@ -27,6 +27,6 @@ module Auth
     # Don't generate system test files.
     config.generators.system_tests = nil
 
-    config.hosts << "02cf-89-188-168-91.eu.ngrok.io"
+    config.hosts << "611d-89-188-168-91.eu.ngrok.io"
   end
 end

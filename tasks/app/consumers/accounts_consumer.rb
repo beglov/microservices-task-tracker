@@ -19,6 +19,8 @@ class AccountsConsumer < Racecar::Consumer
       AccountService::Delete.new(event).call
     when "AccountRoleChanged"
       AccountService::ChangeRole.new(event).call
+    else
+      Rails.logger.info { "Unknown event: #{event[:event_name]}" }
     end
   end
 end

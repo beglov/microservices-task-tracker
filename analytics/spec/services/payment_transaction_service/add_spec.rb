@@ -16,8 +16,8 @@ RSpec.describe PaymentTransactionService::Add do
           account_public_id: "66fe01aa-d2b0-4912-872d-8a4323522102",
           task_public_id: "1bc8eba5-7ef2-40a2-9193-2b0be4e8b6ed",
           description: "Списание денег за назначенную задачу",
-          credit: 0,
-          debit: 13,
+          credit: "0",
+          debit: "13",
         },
       }
     end

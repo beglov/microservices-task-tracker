@@ -17,6 +17,8 @@ class TasksConsumer < Racecar::Consumer
       TaskService::Update.new(event).call
     when "TaskDeleted"
       TaskService::Delete.new(event).call
+    else
+      Rails.logger.info { "Unknown event: #{event[:event_name]}" }
     end
   end
 end

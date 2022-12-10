@@ -21,6 +21,8 @@ class TasksConsumer < Racecar::Consumer
       TaskService::Assign.new(event).call
     when "TaskClosed"
       TaskService::Close.new(event).call
+    else
+      Rails.logger.info { "Unknown event: #{event[:event_name]}" }
     end
   end
 end

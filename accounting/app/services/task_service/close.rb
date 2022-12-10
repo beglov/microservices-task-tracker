@@ -56,8 +56,8 @@ module TaskService
       end
     end
 
-    def create_payment_transaction(account, task)
-      transaction = account.payment_transactions.new(payment_transaction_param(task))
+    def create_payment_transaction(_account, task)
+      transaction = PaymentTransaction.new(payment_transaction_param(task))
 
       if transaction.save
         transaction.reload # выполняем пезагрузку что бы появились данные в поле public_id
@@ -74,6 +74,7 @@ module TaskService
 
     def payment_transaction_param(task)
       {
+        account_id: task.account_id,
         task_id: task.id,
         description: "Начисление денег за выполненную задачу",
         credit: task.complete_price,

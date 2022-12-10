@@ -12,6 +12,8 @@ class PaymentTransactionsConsumer < Racecar::Consumer
     case event[:event_name]
     when "PaymentTransactionAdded"
       PaymentTransactionService::Add.new(event).call
+    else
+      Rails.logger.info { "Unknown event: #{event[:event_name]}" }
     end
   end
 end
