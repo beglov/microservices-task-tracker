@@ -67,9 +67,9 @@ RSpec.describe "/tasks", type: :request do
   describe "POST /create" do
     context "with valid parameters" do
       it "creates a new Task" do
-        expect do
+        expect {
           post tasks_url, params: { task: valid_attributes }
-        end.to change(Task, :count).by(1)
+        }.to change(Task, :count).by(1)
       end
 
       it "redirects to the created task" do
@@ -80,9 +80,9 @@ RSpec.describe "/tasks", type: :request do
 
     context "with invalid parameters" do
       it "does not create a new Task" do
-        expect do
+        expect {
           post tasks_url, params: { task: invalid_attributes }
-        end.not_to change(Task, :count)
+        }.not_to change(Task, :count)
       end
 
       it "renders a successful response (i.e. to display the 'new' template)" do
@@ -125,9 +125,9 @@ RSpec.describe "/tasks", type: :request do
   describe "DELETE /destroy" do
     it "destroys the requested task" do
       task = create(:task)
-      expect do
+      expect {
         delete task_url(task)
-      end.to change(Task, :count).by(-1)
+      }.to change(Task, :count).by(-1)
     end
 
     it "redirects to the tasks list" do

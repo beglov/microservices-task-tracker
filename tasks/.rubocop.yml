@@ -1,55 +1,12 @@
-inherit_from: .rubocop_todo.yml
-
-inherit_mode:
-  merge:
-    - Exclude
-
 require:
   - rubocop-performance
   - rubocop-rails
   - rubocop-rspec
 
-AllCops:
-  NewCops: enable
+inherit_mode:
+  merge:
+    - Exclude
 
-Layout/LineLength:
-  Enabled: false
-
-Style/Documentation:
-  Enabled: false
-Style/FrozenStringLiteralComment:
-  Enabled: false
-Style/StringLiterals:
-  EnforcedStyle: double_quotes
-Style/TrailingCommaInArguments:
-  EnforcedStyleForMultiline: comma
-Style/TrailingCommaInArrayLiteral:
-  EnforcedStyleForMultiline: comma
-Style/TrailingCommaInHashLiteral:
-  EnforcedStyleForMultiline: consistent_comma
-Style/BlockDelimiters:
-  BracesRequiredMethods: ['expect']
-
-Metrics/AbcSize:
-  CountRepeatedAttributes: false
-Metrics/MethodLength:
-  CountAsOne: ['array', 'hash', 'heredoc']
-  Exclude:
-    - 'db/migrate/**/*'
-
-Rails/I18nLocaleTexts:
-  Enabled: false
-Rails/SkipsModelValidations:
-  Exclude:
-    - 'db/migrate/**/*'
-
-RSpec/ExampleLength:
-  Enabled: false
-RSpec/ContextWording:
-  Exclude:
-    - 'spec/system/**/*'
-RSpec/MessageSpies:
-  EnforcedStyle: receive
-RSpec/MultipleExpectations:
-  Exclude:
-    - 'spec/system/**/*'
+inherit_from:
+  - https://gist.githubusercontent.com/beglov/9da03971bae1ac549e2c570d052451f2/raw/7005950f3974dc69f0ca09f4f257b894e4dc4b35/rubocop.yml
+  - .rubocop_todo.yml
