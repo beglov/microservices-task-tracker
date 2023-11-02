@@ -27,6 +27,6 @@ module Auth
     # Don't generate system test files.
     config.generators.system_tests = nil
 
-    config.hosts << "611d-89-188-168-91.eu.ngrok.io"
+    config.hosts << "quality-gator-sensibly.ngrok-free.app"
   end
 end
