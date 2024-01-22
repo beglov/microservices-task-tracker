@@ -2,8 +2,8 @@
 
 class KarafkaApp < Karafka::App
   setup do |config|
-    config.kafka = { 'bootstrap.servers': ENV.fetch("KAFKA_BROKER") }
-    config.client_id = 'analytics_service'
+    config.kafka = { "bootstrap.servers": ENV.fetch("KAFKA_BROKER") }
+    config.client_id = "analytics_service"
     # Recreate consumers with each batch. This will allow Rails code reload to work in the
     # development mode. Otherwise Karafka process would not be aware of code changes
     config.consumer_persistence = !Rails.env.development?
@@ -24,11 +24,29 @@ class KarafkaApp < Karafka::App
       Karafka.logger,
       # If you set this to true, logs will contain each message details
       # Please note, that this can be extensive
-      log_messages: false
-    )
+      log_messages: false,
+    ),
   )
 
   routes.draw do
+    topic :"accounts-stream" do
+      consumer AccountsConsumer
+    end
+    topic :accounts do
+      consumer AccountsConsumer
+    end
+
+    topic :"tasks-stream" do
+      consumer TasksConsumer
+    end
+    topic :tasks do
+      consumer TasksConsumer
+    end
+
+    topic :"payment-transactions" do
+      consumer PaymentTransactionsConsumer
+    end
+
     # Uncomment this if you use Karafka with ActiveJob
     # You need to define the topic per each queue name you use
     # active_job_topic :default
