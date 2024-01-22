@@ -47,7 +47,7 @@ module PaymentTransactionService
       result = SchemaRegistry.validate_event(event, "payment_transactions.added", version: 1)
       raise "PaymentTransactionAdded event not valid: #{result.failure}" if result.failure?
 
-      Producer.new.call(event, topic: "payment-transactions")
+      Karafka.producer.produce_async(payload: event.to_json, topic: "payment-transactions")
     end
 
     def payment_transaction_event(transaction)

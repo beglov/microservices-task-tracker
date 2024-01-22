@@ -52,8 +52,8 @@ services:
       - db
       - broker
 
-  tasks-accounts-consumer: &tasks
-    command: bundle exec racecar AccountsConsumer
+  tasks-karafka: &tasks
+    command: bundle exec karafka server
     build: tasks
     env_file: .env
     volumes:
@@ -72,8 +72,8 @@ services:
     ports:
       - "3010:3000"
 
-  accounting-accounts-consumer: &accounting
-    command: bundle exec racecar AccountsConsumer
+  accounting-karafka: &accounting
+    command: bundle exec karafka server
     build: accounting
     env_file: .env
     volumes:
@@ -86,18 +86,14 @@ services:
       - broker
       - chrome-server
 
-  accounting-tasks-consumer:
-    <<: *accounting
-    command: bundle exec racecar TasksConsumer
-
   accounting:
     <<: *accounting
     command: [ 'rails', 'server', '-p', '3000', '-b', '0.0.0.0' ]
     ports:
       - "3020:3000"
 
-  analytics-accounts-consumer: &analytics
-    command: bundle exec racecar AccountsConsumer
+  analytics-karafka: &analytics
+    command: bundle exec karafka server
     build: analytics
     env_file: .env
     volumes:
@@ -109,14 +105,6 @@ services:
       - db
       - broker
       - chrome-server
-
-  analytics-tasks-consumer:
-    <<: *analytics
-    command: bundle exec racecar TasksConsumer
-
-  analytics-payment-transactions-consumer:
-    <<: *analytics
-    command: bundle exec racecar PaymentTransactionsConsumer
 
   analytics:
     <<: *analytics

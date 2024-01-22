@@ -139,7 +139,17 @@ GEM
     json-schema (3.0.0)
       addressable (>= 2.8)
     jwt (2.5.0)
-    king_konf (1.0.1)
+    karafka (2.2.14)
+      karafka-core (>= 2.2.7, < 2.3.0)
+      waterdrop (>= 2.6.11, < 3.0.0)
+      zeitwerk (~> 2.3)
+    karafka-core (2.2.7)
+      concurrent-ruby (>= 1.1)
+      karafka-rdkafka (>= 0.13.9, < 0.15.0)
+    karafka-rdkafka (0.14.7)
+      ffi (~> 1.15)
+      mini_portile2 (~> 2.6)
+      rake (> 12)
     loofah (2.19.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -190,9 +200,6 @@ GEM
     puma (5.6.5)
       nio4r (~> 2.0)
     racc (1.6.0)
-    racecar (2.8.2)
-      king_konf (~> 1.0.0)
-      rdkafka (~> 0.12.0)
     rack (2.2.4)
     rack-protection (3.0.2)
       rack
@@ -226,10 +233,6 @@ GEM
       zeitwerk (~> 2.5)
     rainbow (3.1.1)
     rake (13.0.6)
-    rdkafka (0.12.0)
-      ffi (~> 1.15)
-      mini_portile2 (~> 2.6)
-      rake (> 12)
     regexp_parser (2.6.0)
     reline (0.3.1)
       io-console (~> 0.5)
@@ -307,6 +310,9 @@ GEM
     version_gem (1.1.1)
     warden (1.2.9)
       rack (>= 2.0.9)
+    waterdrop (2.6.12)
+      karafka-core (>= 2.2.3, < 3.0.0)
+      zeitwerk (~> 2.3)
     web-console (4.2.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -333,11 +339,11 @@ DEPENDENCIES
   faker
   importmap-rails
   jbuilder
+  karafka (>= 2.2.10)
   omniauth-oauth2
   omniauth-rails_csrf_protection
   pg (~> 1.1)
   puma (~> 5.0)
-  racecar
   rails (~> 7.0.2, >= 7.0.2.4)
   rspec-rails
   rubocop

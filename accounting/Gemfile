@@ -32,8 +32,8 @@ gem "devise"
 gem "omniauth-oauth2"
 gem "omniauth-rails_csrf_protection"
 
-# Simple framework for Kafka consumers
-gem "racecar"
+# Ruby and Rails efficient Kafka processing framework
+gem "karafka", ">= 2.2.10"
 
 # dry-rb
 gem "dry-monads"
