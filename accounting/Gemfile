@@ -32,8 +32,8 @@ gem "devise"
 gem "omniauth-oauth2"
 gem "omniauth-rails_csrf_protection"
 
-# Simple framework for Kafka consumers
-gem "racecar"
+# Ruby and Rails efficient Kafka processing framework
+gem "karafka", ">= 2.2.10"
 
 # dry-rb
 gem "dry-monads"
@@ -85,6 +85,7 @@ end
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
+  gem "karafka-testing"
   gem "selenium-webdriver"
   # gem "webdrivers"
 end

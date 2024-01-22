@@ -54,17 +54,10 @@ RSpec.describe TaskService::Close do
         expect(account.balance).to eq new_balance
       end
 
-      it "produce PaymentTransactionAdded event" do
-        producer = instance_double(Producer, call: nil)
-        allow(Producer).to receive(:new).and_return(producer)
-        expect(producer).to receive(:call).with(
-          hash_including(
-            producer: "accounting_service",
-            event_name: "PaymentTransactionAdded",
-          ),
-          topic: "payment-transactions",
-        )
+      it "produce PaymentTransactionAdded event", :aggregate_failures do
         service.call
+        expect(karafka.produced_messages.size).to eq 1
+        expect(karafka.produced_messages.first[:topic]).to eq "payment-transactions"
       end
     end
 

@@ -44,7 +44,7 @@ class TasksController < ApplicationController
 
         raise "TaskCreated event not valid" if result.failure?
 
-        Producer.new.call(event, topic: "tasks-stream")
+        Karafka.producer.produce_async(payload: event.to_json, topic: "tasks-stream")
 
         event = {
           **task_event_data,
@@ -59,7 +59,7 @@ class TasksController < ApplicationController
 
         raise "TaskAssigned event not valid" if result.failure?
 
-        Producer.new.call(event, topic: "tasks")
+        Karafka.producer.produce_async(payload: event.to_json, topic: "tasks")
         # --------------------------------------------------------------------
 
         format.html { redirect_to tasks_url, notice: "Task was successfully created." }
@@ -91,7 +91,7 @@ class TasksController < ApplicationController
 
         result = SchemaRegistry.validate_event(event, "tasks.updated", version: 2)
 
-        Producer.new.call(event, topic: "tasks-stream") if result.success?
+        Karafka.producer.produce_async(payload: event.to_json, topic: "tasks-stream") if result.success?
         # --------------------------------------------------------------------
 
         format.html { redirect_to task_url(@task), notice: "Task was successfully updated." }
@@ -113,7 +113,7 @@ class TasksController < ApplicationController
       event_name: "TaskDeleted",
       data: { public_id: @task.public_id },
     }
-    Producer.new.call(event, topic: "tasks-stream")
+    Karafka.producer.produce_async(payload: event.to_json, topic: "tasks-stream")
     # --------------------------------------------------------------------
 
     respond_to do |format|
@@ -141,7 +141,7 @@ class TasksController < ApplicationController
 
       raise "TaskAssigned event not valid" if result.failure?
 
-      Producer.new.call(event, topic: "tasks")
+      Karafka.producer.produce_async(payload: event.to_json, topic: "tasks")
       # --------------------------------------------------------------------
     end
     redirect_to tasks_url, notice: "Задачи успешно заасайнены"
@@ -162,7 +162,7 @@ class TasksController < ApplicationController
 
     raise "TaskClosed event not valid" if result.failure?
 
-    Producer.new.call(event, topic: "tasks")
+    Karafka.producer.produce_async(payload: event.to_json, topic: "tasks")
     # --------------------------------------------------------------------
     redirect_to tasks_url
   end
